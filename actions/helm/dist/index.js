@@ -44,6 +44,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const yaml_1 = __importDefault(__nccwpck_require__(5065));
 const fs = __importStar(__nccwpck_require__(5747));
+const child_process_1 = __nccwpck_require__(3129);
 const core = __importStar(__nccwpck_require__(2186));
 const consul_1 = __importDefault(__nccwpck_require__(4440));
 function getConfig() {
@@ -60,7 +61,6 @@ function getConfig() {
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const execSync = __nccwpck_require__(9442);
         const config = getConfig();
         process.chdir(config.workDir);
         const consul = new consul_1.default(config.consul);
@@ -74,7 +74,7 @@ function run() {
         chart.contents = jsonConfig.chart;
         fs.writeFileSync('values.yaml', values.toString());
         fs.writeFileSync('Chart.yaml', chart.toString());
-        execSync(`helm upgrade ${config.chartName} ./`);
+        (0, child_process_1.execSync)(`helm upgrade ${config.chartName} ./`);
     });
 }
 run().catch(e => core.setFailed(e.message));
@@ -16540,14 +16540,6 @@ exports.visitAsync = visitAsync;
 
 /***/ }),
 
-/***/ 9442:
-/***/ ((module) => {
-
-module.exports = eval("require")("exec-sync");
-
-
-/***/ }),
-
 /***/ 3313:
 /***/ ((module) => {
 
@@ -16561,6 +16553,14 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 3129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 

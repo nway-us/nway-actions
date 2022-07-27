@@ -1,5 +1,6 @@
 import YAML from 'yaml';
 import * as fs from 'fs';
+import {execSync} from 'child_process';
 import * as core from '@actions/core';
 
 import { Chart } from './interfaces/chart.interface';
@@ -22,9 +23,6 @@ function getConfig() {
 }
 
 async function run(): Promise<void> {
-    
-    const execSync = require('exec-sync');
-
     const config = getConfig();
 
     process.chdir(config.workDir)
