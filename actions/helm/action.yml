@@ -1,11 +1,22 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: apply-heml-template
+description: Apply the helm template
+author: Arley Fernandez
 inputs:
-  milliseconds: # change this
+  chart_name: # change this
     required: true
     description: 'input description here'
-    default: 'default value if applicable'
+  work_dir:
+    required: true
+    description: 'input description here'
+  consul_host: # change this
+    required: true
+    description: 'input description here'
+  consul_token:
+    required: true
+    description: 'input description here'
+  config_path:
+    required: true
+    description: 'input description here'
 runs:
   using: 'node16'
-  main: 'dist/index.js'
+  main: 'lib/main.js'
