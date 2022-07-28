@@ -16,7 +16,8 @@ function getConfig() {
             host: core.getInput('consul_host'),
             token: core.getInput('consul_token'),
         },
-        configPath: core.getInput('config_path')
+        configPath: core.getInput('config_path'),
+        dockerImage: core.getInput('docker_image')
     }
 
     return config;
@@ -32,6 +33,8 @@ async function run(): Promise<void> {
     const configStr = await consul.DownloadFromConsul(config.configPath);
 
     const jsonConfig: {values: Values, chart: Chart} = JSON.parse(configStr);
+
+    jsonConfig.values.image.name = config.dockerImage;
 
     const values = new YAML.Document();
     const chart = new YAML.Document();

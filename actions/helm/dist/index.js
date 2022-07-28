@@ -55,7 +55,8 @@ function getConfig() {
             host: core.getInput('consul_host'),
             token: core.getInput('consul_token'),
         },
-        configPath: core.getInput('config_path')
+        configPath: core.getInput('config_path'),
+        dockerImage: core.getInput('docker_image')
     };
     return config;
 }
@@ -66,6 +67,7 @@ function run() {
         const consul = new consul_1.default(config.consul);
         const configStr = yield consul.DownloadFromConsul(config.configPath);
         const jsonConfig = JSON.parse(configStr);
+        jsonConfig.values.image.name = config.dockerImage;
         const values = new yaml_1.default.Document();
         const chart = new yaml_1.default.Document();
         // @ts-ignore

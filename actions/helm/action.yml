@@ -17,6 +17,9 @@ inputs:
   config_path:
     required: true
     description: 'input description here'
+  docker_image:
+    required: true
+    description: 'input description here'
 runs:
   using: 'node16'
   main: 'dist/index.js'
