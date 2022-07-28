@@ -77,7 +77,7 @@ function run() {
         chart.contents = jsonConfig.chart;
         fs.writeFileSync('values.yaml', values.toString());
         fs.writeFileSync('Chart.yaml', chart.toString());
-        const response = yield (0, child_process_1.execSync)(`helm upgrade ${config.chartName} -f values.yaml ./ --install -n ${config.namespace}`);
+        const response = yield (0, child_process_1.execSync)(`helm upgrade --dry-run --install -f values.yaml ${config.chartName} ./ -n ${config.namespace}`);
         core.info(response.toString());
     });
 }
