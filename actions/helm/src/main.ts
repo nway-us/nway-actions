@@ -27,7 +27,7 @@ function getConfig() {
 async function run(): Promise<void> {
     const config = getConfig();
 
-    process.chdir(config.workDir)
+    process.chdir(config.workDir);
 
     const consul = new ConsulHelper(config.consul);
 
@@ -48,9 +48,9 @@ async function run(): Promise<void> {
     fs.writeFileSync('values.yaml', values.toString());
     fs.writeFileSync('Chart.yaml', chart.toString());
 
-    const response = await execSync(`helm upgrade ${config.chartName} ./ --install -n ${config.namespace}`);
+    const response = await execSync(`helm upgrade ${config.chartName} -f values.yaml ./ --install -n ${config.namespace}`);
 
-    core.info(response.toString())
+    core.info(response.toString());
 }
 
 run().catch(e => core.setFailed(e.message));
