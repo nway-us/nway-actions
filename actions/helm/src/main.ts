@@ -48,7 +48,7 @@ async function run(): Promise<void> {
     fs.writeFileSync('values.yaml', values.toString());
     fs.writeFileSync('Chart.yaml', chart.toString());
 
-    execSync(`helm upgrade ${config.chartName} ./ -n ${config.namespace}`);
+    execSync(`helm upgrade ${config.chartName} ./ --install -n ${config.namespace}`);
 }
 
 run().catch(e => core.setFailed(e.message));
