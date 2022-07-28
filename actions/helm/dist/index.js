@@ -56,7 +56,8 @@ function getConfig() {
             token: core.getInput('consul_token'),
         },
         configPath: core.getInput('config_path'),
-        dockerImage: core.getInput('docker_image')
+        dockerImage: core.getInput('docker_image'),
+        namespace: core.getInput('namespace')
     };
     return config;
 }
@@ -76,7 +77,7 @@ function run() {
         chart.contents = jsonConfig.chart;
         fs.writeFileSync('values.yaml', values.toString());
         fs.writeFileSync('Chart.yaml', chart.toString());
-        (0, child_process_1.execSync)(`helm upgrade ${config.chartName} ./`);
+        (0, child_process_1.execSync)(`helm upgrade ${config.chartName} ./ -n ${config.namespace}`);
     });
 }
 run().catch(e => core.setFailed(e.message));

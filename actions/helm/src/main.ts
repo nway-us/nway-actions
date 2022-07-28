@@ -17,7 +17,8 @@ function getConfig() {
             token: core.getInput('consul_token'),
         },
         configPath: core.getInput('config_path'),
-        dockerImage: core.getInput('docker_image')
+        dockerImage: core.getInput('docker_image'),
+        namespace: core.getInput('namespace')
     }
 
     return config;
@@ -47,7 +48,7 @@ async function run(): Promise<void> {
     fs.writeFileSync('values.yaml', values.toString());
     fs.writeFileSync('Chart.yaml', chart.toString());
 
-    execSync(`helm upgrade ${config.chartName} ./`);
+    execSync(`helm upgrade ${config.chartName} ./ -n ${config.namespace}`);
 }
 
 run().catch(e => core.setFailed(e.message));
