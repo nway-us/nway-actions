@@ -1,0 +1,28 @@
+name: apply-heml-template
+description: Apply the helm template
+author: Arley Fernandez
+inputs:
+  chart_name: # change this
+    required: true
+    description: 'input description here'
+  work_dir:
+    required: true
+    description: 'input description here'
+  consul_host: # change this
+    required: true
+    description: 'input description here'
+  consul_token:
+    required: true
+    description: 'input description here'
+  config_path:
+    required: true
+    description: 'input description here'
+  docker_image:
+    required: true
+    description: 'input description here'
+  namespace:
+    required: true
+    description: 'input description here'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

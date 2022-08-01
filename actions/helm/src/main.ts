@@ -18,7 +18,7 @@ function getConfig() {
         },
         configPath: core.getInput('config_path'),
         dockerImage: core.getInput('docker_image'),
-        namespace: core.getInput('namespace')
+        namespace: core.getInput('namespace'),
     }
 
     return config;
