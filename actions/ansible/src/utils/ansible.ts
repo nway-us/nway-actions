@@ -31,7 +31,7 @@ EOF`)
     }
 
     async applyPlaybook(config: Input) {
-        const response = await execSync(`ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`)
+        const response = await execSync(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`)
 
         info(response.toString())
     }
