@@ -2,13 +2,10 @@ name: apply-heml-template
 description: Apply the helm template
 author: Arley Fernandez
 inputs:
-  chart_name: # change this
+  host_list:
     required: true
     description: 'input description here'
-  work_dir:
-    required: true
-    description: 'input description here'
-  consul_host: # change this
+  consul_host:
     required: true
     description: 'input description here'
   consul_token:
@@ -17,10 +14,10 @@ inputs:
   config_path:
     required: true
     description: 'input description here'
-  docker_image:
+  ssh_key:
     required: true
     description: 'input description here'
-  namespace:
+  vm_user:
     required: true
     description: 'input description here'
 runs:

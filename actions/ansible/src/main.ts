@@ -9,13 +9,13 @@ import { Input } from './interfaces/input.interface';
 
 function getConfig(): Input {
     const config: Input = {
-        hostList: core.getInput('host_list', {required: false}),
+        hostList: core.getInput('host_list', {required: true}),
         consul: {
-            host: core.getInput('consul_host', {required: false}),
-            token: core.getInput('consul_token', {required: false}),
+            host: core.getInput('consul_host', {required: true}),
+            token: core.getInput('consul_token', {required: true}),
         },
-        configPath: core.getInput('config_path', {required: false}),
-        sshKey: core.getInput('ssh_key', {required: false}),
+        configPath: core.getInput('config_path', {required: true}),
+        sshKey: core.getInput('ssh_key', {required: true}),
         user: core.getInput('vm_user', {required: true})
     }
 
