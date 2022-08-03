@@ -90,12 +90,15 @@ class Ansible {
         (0, child_process_1.execSync)('mkdir -p ~/.ssh');
         const hosts = config.hostList.split(',').join('\n');
         (0, child_process_1.execSync)(`echo "${hosts}" >> ~/.ssh/known_hosts`);
-        (0, child_process_1.execSync)(`(umask  077 ; echo ${config.sshKey} | base64 --decode > ~/.ssh/id_rsa)`);
+        (0, child_process_1.execSync)(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/id_rsa)`);
     }
     configAnsibleHosts(config) {
-        (0, child_process_1.execSync)(`sudo mkdir /etc/ansible`);
+        (0, child_process_1.execSync)(`sudo mkdir /etc/ansible || true`);
         const hosts = config.hostList.split(',').join('\n');
-        (0, child_process_1.execSync)(`echo -en '[deploy]\n ${hosts}' > /etc/ansible/hosts`);
+        (0, child_process_1.execSync)(`sudo cat << EOF > /etc/ansible/hosts2
+[deploy]
+${hosts}
+EOF`);
     }
     applyPlaybook(config) {
         (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`);
