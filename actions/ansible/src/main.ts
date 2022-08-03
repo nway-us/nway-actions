@@ -40,4 +40,4 @@ async function run(): Promise<void> {
     await ansible.applyPlaybook(config);
 }
 
-run().catch(e => core.setFailed(e.message));
+run().catch(e => console.log(e));

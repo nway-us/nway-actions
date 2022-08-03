@@ -72,7 +72,7 @@ function run() {
         yield ansible.applyPlaybook(config);
     });
 }
-run().catch(e => core.setFailed(e.message));
+run().catch(e => console.log(e));
 
 
 /***/ }),
