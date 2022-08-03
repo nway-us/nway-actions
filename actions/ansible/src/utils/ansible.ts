@@ -20,7 +20,7 @@ export class Ansible {
 
         const hosts = config.hostList.split(',').join('\n');
 
-        execSync(`sudo cat << EOF > /etc/ansible/hosts2
+        execSync(`sudo cat << EOF > /etc/ansible/hosts
 [deploy]
 ${hosts}
 EOF`)

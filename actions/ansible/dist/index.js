@@ -95,7 +95,7 @@ class Ansible {
     configAnsibleHosts(config) {
         (0, child_process_1.execSync)(`sudo mkdir /etc/ansible || true`);
         const hosts = config.hostList.split(',').join('\n');
-        (0, child_process_1.execSync)(`sudo cat << EOF > /etc/ansible/hosts2
+        (0, child_process_1.execSync)(`sudo cat << EOF > /etc/ansible/hosts
 [deploy]
 ${hosts}
 EOF`);
