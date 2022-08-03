@@ -69,7 +69,7 @@ function run() {
         fs.writeFileSync('playbook.yml', configStr);
         ansible.configSshKey(config);
         ansible.configAnsibleHosts(config);
-        ansible.applyPlaybook(config);
+        yield ansible.applyPlaybook(config);
     });
 }
 run().catch(e => core.setFailed(e.message));
@@ -78,12 +78,22 @@ run().catch(e => core.setFailed(e.message));
 /***/ }),
 
 /***/ 1793:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Ansible = void 0;
+const core_1 = __nccwpck_require__(2186);
 const child_process_1 = __nccwpck_require__(3129);
 class Ansible {
     configSshKey(config) {
@@ -101,7 +111,10 @@ ${hosts}
 EOF`);
     }
     applyPlaybook(config) {
-        (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`);
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`);
+            (0, core_1.info)(response.toString());
+        });
     }
 }
 exports.Ansible = Ansible;

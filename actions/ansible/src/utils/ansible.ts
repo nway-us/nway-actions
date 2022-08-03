@@ -1,4 +1,5 @@
 
+import { info } from '@actions/core';
 import { execSync } from 'child_process';
 
 import { Input } from "../interfaces/input.interface";
@@ -26,7 +27,9 @@ ${hosts}
 EOF`)
     }
 
-    applyPlaybook(config: Input) {
-        execSync(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`)
+    async applyPlaybook(config: Input) {
+        const response = await execSync(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`)
+
+        info(response.toString())
     }
 }
