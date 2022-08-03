@@ -12,15 +12,18 @@ export class Ansible {
 
         execSync(`echo "${hosts}" >> ~/.ssh/known_hosts`)
 
-        execSync(`(umask  077 ; echo ${config.sshKey} | base64 --decode > ~/.ssh/id_rsa)`)
+        execSync(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/id_rsa)`)
     }
 
     configAnsibleHosts(config: Input) {
-        execSync(`sudo mkdir /etc/ansible`)
+        execSync(`sudo mkdir /etc/ansible || true`)
 
         const hosts = config.hostList.split(',').join('\n');
 
-        execSync(`echo -en '[deploy]\n ${ hosts }' > /etc/ansible/hosts`)
+        execSync(`sudo cat << EOF > /etc/ansible/hosts2
+[deploy]
+${hosts}
+EOF`)
     }
 
     applyPlaybook(config: Input) {
