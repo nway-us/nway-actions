@@ -72,7 +72,7 @@ function run() {
         yield ansible.applyPlaybook(config);
     });
 }
-run().catch(e => console.log(e));
+run().catch(e => core.setFailed(e.message));
 
 
 /***/ }),
@@ -100,11 +100,14 @@ class Ansible {
         (0, child_process_1.execSync)('mkdir -p ~/.ssh');
         const hosts = config.hostList.split(',').join('\n');
         (0, child_process_1.execSync)(`echo "${hosts}" >> ~/.ssh/known_hosts`);
-        (0, child_process_1.execSync)(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/id_rsa)`);
+        (0, child_process_1.execSync)(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`);
     }
     configAnsibleHosts(config) {
         (0, child_process_1.execSync)(`sudo mkdir /etc/ansible || true`);
-        const hosts = config.hostList.split(',').join('\n');
+        const hosts = config.hostList
+            .split(',')
+            .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
+            .join('\n');
         (0, child_process_1.execSync)(`sudo cat << EOF > /etc/ansible/hosts
 [deploy]
 ${hosts}
@@ -112,7 +115,7 @@ EOF`);
     }
     applyPlaybook(config) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`);
+            const response = yield (0, child_process_1.execSync)(`ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`);
             (0, core_1.info)(response.toString());
         });
     }

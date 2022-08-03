@@ -13,13 +13,16 @@ export class Ansible {
 
         execSync(`echo "${hosts}" >> ~/.ssh/known_hosts`)
 
-        execSync(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/id_rsa)`)
+        execSync(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`)
     }
 
     configAnsibleHosts(config: Input) {
         execSync(`sudo mkdir /etc/ansible || true`)
 
-        const hosts = config.hostList.split(',').join('\n');
+        const hosts = config.hostList
+        .split(',')
+        .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
+        .join('\n');
 
         execSync(`sudo cat << EOF > /etc/ansible/hosts
 [deploy]
@@ -28,7 +31,7 @@ EOF`)
     }
 
     async applyPlaybook(config: Input) {
-        const response = await execSync(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`)
+        const response = await execSync(`ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`)
 
         info(response.toString())
     }
