@@ -1,4 +1,3 @@
-import YAML from 'yaml';
 import * as fs from 'fs';
 import * as core from '@actions/core';
 
@@ -32,12 +31,7 @@ async function run(): Promise<void> {
 
     const configStr = await consul.DownloadFromConsul(config.configPath);
 
-    const values = new YAML.Document();
-
-    // @ts-ignore
-    values.contents = JSON.parse(configStr);
-
-    fs.writeFileSync('playbook.yml', values.toString());
+    fs.writeFileSync('playbook.yml', configStr);
 
     ansible.configSshKey(config);
 

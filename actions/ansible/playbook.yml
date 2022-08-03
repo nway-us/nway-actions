@@ -1,0 +1,10 @@
+- name: Test Action
+
+  hosts: "{{ variable_host | default('web') }}"
+  remote_user: ec2-user
+
+  tasks:
+    - name: Copy file docker compose
+      copy:
+        src: docker-compose.yml
+        dest: /tmp/docker-compose.yml
