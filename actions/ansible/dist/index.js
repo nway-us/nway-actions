@@ -69,7 +69,7 @@ function run() {
         fs.writeFileSync('playbook.yml', configStr);
         ansible.configSshKey(config);
         ansible.configAnsibleHosts(config);
-        yield ansible.applyPlaybook(config);
+        //await ansible.applyPlaybook(config);
     });
 }
 run().catch(e => core.setFailed(e.message));

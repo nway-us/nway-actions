@@ -37,7 +37,7 @@ async function run(): Promise<void> {
 
     ansible.configAnsibleHosts(config);
 
-    await ansible.applyPlaybook(config);
+    //await ansible.applyPlaybook(config);
 }
 
 run().catch(e => core.setFailed(e.message));
