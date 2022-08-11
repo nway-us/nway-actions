@@ -131,28 +131,9 @@ async function run() {
     : `See more details in [SonarQube](${SQDetailsURL})`
 
   let checkRunId = await createCheckRun({ octokit, repo, summary })
-  let copyRunId = checkRunId
-  let copy = repo.owner;
-  repo.owner = 'nwayamerica'
-
-  const rootCheckRunId = await createCheckRun({ octokit, repo, summary })
 
   issues.map(async (batch) => {
     const annotations = issuesToAnnotations(batch)
-
-    repo.owner = copy
-    checkRunId = copyRunId
-
-    await updateCheckRun({
-      octokit,
-      repo,
-      checkRunId,
-      annotations,
-      summary,
-    })
-
-    checkRunId = rootCheckRunId
-    repo.owner = 'nwayamerica'
 
     await updateCheckRun({
       octokit,

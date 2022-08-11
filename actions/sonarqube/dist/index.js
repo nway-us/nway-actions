@@ -12145,23 +12145,8 @@ async function run() {
         ? generateSummary(status, SQDetailsURL)
         : `See more details in [SonarQube](${SQDetailsURL})`;
     let checkRunId = await createCheckRun({ octokit, repo, summary });
-    let copyRunId = checkRunId;
-    let copy = repo.owner;
-    repo.owner = 'nwayamerica';
-    const rootCheckRunId = await createCheckRun({ octokit, repo, summary });
     issues.map(async (batch) => {
         const annotations = utils_1.issuesToAnnotations(batch);
-        repo.owner = copy;
-        checkRunId = copyRunId;
-        await updateCheckRun({
-            octokit,
-            repo,
-            checkRunId,
-            annotations,
-            summary,
-        });
-        checkRunId = rootCheckRunId;
-        repo.owner = 'nwayamerica';
         await updateCheckRun({
             octokit,
             repo,
