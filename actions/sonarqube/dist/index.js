@@ -12092,17 +12092,12 @@ const createCheckRun = async ({ octokit, repo, summary, annotations, }) => {
     core_1.info('Creating check');
     const pullRequest = github_1.context.payload.pull_request;
     const ref = pullRequest ? pullRequest.head.sha : github_1.context.sha;
-    try {
-        const { data: { id: checkRunId }, } = await octokit.checks.create(Object.assign(Object.assign({}, repo), { name: 'Automatic Review with SonarQube', head_sha: ref, status: 'completed', conclusion: 'neutral', output: {
-                title: 'SonarQube',
-                summary,
-                annotations,
-            } }));
-        return checkRunId;
-    }
-    catch (err) {
-        throw new Error(err);
-    }
+    const { data: { id: checkRunId }, } = await octokit.checks.create(Object.assign(Object.assign({}, repo), { name: 'Automatic Review with SonarQube', head_sha: ref, status: 'completed', conclusion: 'neutral', output: {
+            title: 'SonarQube',
+            summary,
+            annotations,
+        } }));
+    return checkRunId;
 };
 const generateSummary = (status, url) => {
     const conditions = status.conditions.reduce((acc, current) => {
@@ -12130,16 +12125,11 @@ ${conditions}
 };
 const updateCheckRun = async ({ octokit, repo, checkRunId, annotations, summary, }) => {
     core_1.info('Updating check with annotations');
-    try {
-        await octokit.checks.update(Object.assign(Object.assign({}, repo), { check_run_id: checkRunId, status: 'completed', conclusion: 'neutral', output: {
-                title: 'SonarQube',
-                summary,
-                annotations,
-            } }));
-    }
-    catch (err) {
-        throw new Error(err);
-    }
+    await octokit.checks.update(Object.assign(Object.assign({}, repo), { check_run_id: checkRunId, status: 'completed', conclusion: 'neutral', output: {
+            title: 'SonarQube',
+            summary,
+            annotations,
+        } }));
 };
 async function run() {
     const { repo } = github_1.context;
