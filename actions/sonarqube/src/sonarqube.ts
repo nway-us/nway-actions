@@ -96,30 +96,25 @@ export default class Sonarqube {
     status?: string
     result?: Array<[Issue]>
   }): Promise<Array<[Issue]>> => {
-    try {
-      const response = await this.http.get<IssuesResponseAPI>(
-        `/api/issues/search?componentKeys=${this.project.projectKey}&statuses=${status}&ps=${pageSize}&p=${page}`
-      )
 
-      if (response.status !== 200 || !response.data) {
-        return result
-      }
+    const response = await this.http.get<IssuesResponseAPI>(
+      `/api/issues/search?componentKeys=${this.project.projectKey}&statuses=${status}&ps=${pageSize}&p=${page}`
+    )
 
-      const {
-        data: { issues },
-      } = response
-
-      result.push(issues)
-      if (pageSize * page >= response.data.paging.total) {
-        return result
-      }
-
-      return await this.getIssues({ pageSize, page: page + 1, result })
-    } catch (err) {
-      throw new Error(
-        'Error getting project issues from SonarQube. Please make sure you provided the host and token inputs.'
-      )
+    if (response.status !== 200 || !response.data) {
+      return result
     }
+
+    const {
+      data: { issues },
+    } = response
+
+    result.push(issues)
+    if (pageSize * page >= response.data.paging.total) {
+      return result
+    }
+
+    return await this.getIssues({ pageSize, page: page + 1, result })
   }
 
 

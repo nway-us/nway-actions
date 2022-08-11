@@ -12185,21 +12185,16 @@ const core_1 = __nccwpck_require__(2186);
 class Sonarqube {
     constructor(repo) {
         this.getIssues = async ({ pageSize, page, status = 'OPEN', result = [], }) => {
-            try {
-                const response = await this.http.get(`/api/issues/search?componentKeys=${this.project.projectKey}&statuses=${status}&ps=${pageSize}&p=${page}`);
-                if (response.status !== 200 || !response.data) {
-                    return result;
-                }
-                const { data: { issues }, } = response;
-                result.push(issues);
-                if (pageSize * page >= response.data.paging.total) {
-                    return result;
-                }
-                return await this.getIssues({ pageSize, page: page + 1, result });
+            const response = await this.http.get(`/api/issues/search?componentKeys=${this.project.projectKey}&statuses=${status}&ps=${pageSize}&p=${page}`);
+            if (response.status !== 200 || !response.data) {
+                return result;
             }
-            catch (err) {
-                throw new Error('Error getting project issues from SonarQube. Please make sure you provided the host and token inputs.');
+            const { data: { issues }, } = response;
+            result.push(issues);
+            if (pageSize * page >= response.data.paging.total) {
+                return result;
             }
+            return await this.getIssues({ pageSize, page: page + 1, result });
         };
         this.getStatus = async () => {
             const response = await this.http.get(`/api/qualitygates/project_status?projectKey=${this.project.projectKey}`);
