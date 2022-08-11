@@ -1,4 +1,4 @@
-import { getInput, info } from '@actions/core'
+import { getInput, info, setFailed } from '@actions/core'
 import { context, getOctokit } from '@actions/github'
 import type { GitHub } from '@actions/github/lib/utils'
 
@@ -151,4 +151,4 @@ async function run() {
   })
 }
 
-run()
+run().catch(e => setFailed(e.message))

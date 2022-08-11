@@ -12166,7 +12166,7 @@ async function run() {
         });
     });
 }
-run();
+run().catch(e => core_1.setFailed(e.message));
 
 
 /***/ }),
