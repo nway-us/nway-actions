@@ -6,5 +6,6 @@ export interface Input {
     },
     configPath: string,
     sshKey: string,
-    user: string
+    user: string,
+    extraVars: string,
 }

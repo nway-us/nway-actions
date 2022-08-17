@@ -15,9 +15,11 @@ function getConfig(): Input {
         },
         configPath: core.getInput('config_path', {required: true}),
         sshKey: core.getInput('ssh_key', {required: true}),
-        user: core.getInput('vm_user', {required: true})
+        user: core.getInput('vm_user', {required: true}),
+        extraVars: core.getInput('ansible_extra_vars', {required: true})
     }
 
+    config.extraVars = config.extraVars.split(',').map(item => item.trim()).join(' ')
     config.sshKey = config.sshKey.split(',').map(item => item.trim()).join(',');
 
     return config;

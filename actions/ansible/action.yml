@@ -20,6 +20,9 @@ inputs:
   vm_user:
     required: true
     description: 'input description here'
+  ansible_extra_vars:
+    required: true
+    description: 'comma separate ansible extra vars' 
 runs:
   using: 'node16'
   main: 'dist/index.js'

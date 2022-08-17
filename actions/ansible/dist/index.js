@@ -55,8 +55,10 @@ function getConfig() {
         },
         configPath: core.getInput('config_path', { required: true }),
         sshKey: core.getInput('ssh_key', { required: true }),
-        user: core.getInput('vm_user', { required: true })
+        user: core.getInput('vm_user', { required: true }),
+        extraVars: core.getInput('ansible_extra_vars', { required: true })
     };
+    config.extraVars = config.extraVars.split(',').map(item => item.trim()).join(' ');
     config.sshKey = config.sshKey.split(',').map(item => item.trim()).join(',');
     return config;
 }
@@ -115,7 +117,7 @@ EOF`);
     }
     applyPlaybook(config) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "variable_host=deploy"`);
+            const response = yield (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "${config.extraVars}"`);
             (0, core_1.info)(response.toString());
         });
     }
