@@ -32,6 +32,10 @@ EOF`)
     }
 
     async applyPlaybook(config: Input) {
+        const test = await execSync('ansible-playbook --version')
+
+        info(test.toString())
+
         const response = await execSync(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`)
 
         info(response.toString())

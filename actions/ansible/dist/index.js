@@ -118,6 +118,8 @@ EOF`);
     }
     applyPlaybook(config) {
         return __awaiter(this, void 0, void 0, function* () {
+            const test = yield (0, child_process_1.execSync)('ansible-playbook --version');
+            (0, core_1.info)(test.toString());
             const response = yield (0, child_process_1.execSync)(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`);
             (0, core_1.info)(response.toString());
         });
