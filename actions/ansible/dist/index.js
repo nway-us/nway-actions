@@ -105,12 +105,13 @@ class Ansible {
         (0, child_process_1.execSync)(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`);
     }
     configAnsibleHosts(config) {
-        (0, child_process_1.execSync)(`sudo mkdir ansible || true`);
+        (0, child_process_1.execSync)(`mkdir ansible || true`);
+        (0, child_process_1.execSync)('touch ansible/hosts');
         const hosts = config.hostList
             .split(',')
             .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
             .join('\n');
-        (0, child_process_1.execSync)(`sudo cat << EOF > ansible/hosts
+        (0, child_process_1.execSync)(`cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`);

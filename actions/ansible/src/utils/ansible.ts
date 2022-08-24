@@ -17,14 +17,15 @@ export class Ansible {
     }
 
     configAnsibleHosts(config: Input) {
-        execSync(`sudo mkdir ansible || true`)
+        execSync(`mkdir ansible || true`)
+        execSync('touch ansible/hosts')
 
         const hosts = config.hostList
         .split(',')
         .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
         .join('\n');
 
-        execSync(`sudo cat << EOF > ansible/hosts
+        execSync(`cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`)
