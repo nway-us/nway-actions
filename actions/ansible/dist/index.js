@@ -105,19 +105,19 @@ class Ansible {
         (0, child_process_1.execSync)(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`);
     }
     configAnsibleHosts(config) {
-        (0, child_process_1.execSync)(`sudo mkdir /etc/ansible || true`);
+        (0, child_process_1.execSync)(`sudo mkdir ansible || true`);
         const hosts = config.hostList
             .split(',')
             .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
             .join('\n');
-        (0, child_process_1.execSync)(`sudo cat << EOF > /etc/ansible/hosts
+        (0, child_process_1.execSync)(`sudo cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`);
     }
     applyPlaybook(config) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "${config.extraVars}"`);
+            const response = yield (0, child_process_1.execSync)(`/root/.local/bin/ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`);
             (0, core_1.info)(response.toString());
         });
     }

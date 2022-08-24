@@ -17,21 +17,21 @@ export class Ansible {
     }
 
     configAnsibleHosts(config: Input) {
-        execSync(`sudo mkdir /etc/ansible || true`)
+        execSync(`sudo mkdir ansible || true`)
 
         const hosts = config.hostList
         .split(',')
         .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
         .join('\n');
 
-        execSync(`sudo cat << EOF > /etc/ansible/hosts
+        execSync(`sudo cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`)
     }
 
     async applyPlaybook(config: Input) {
-        const response = await execSync(`/root/.local/bin/ansible-playbook ./playbook.yml -u ${config.user} --extra-vars "${config.extraVars}"`)
+        const response = await execSync(`/root/.local/bin/ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`)
 
         info(response.toString())
     }
