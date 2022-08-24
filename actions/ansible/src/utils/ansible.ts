@@ -36,8 +36,8 @@ EOF`)
 
         info(test.toString())
 
-        const response = await execSync(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`)
+        //const response = await execSync(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`)
 
-        info(response.toString())
+        //info(response.toString())
     }
 }
