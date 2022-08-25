@@ -116,20 +116,16 @@ class Ansible {
             .filter(item => item ? true : false)
             .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
             .join('\n');
-        (0, child_process_1.execSync)(`cat << EOF > ansible/hosts
+        const cat = (0, child_process_1.execSync)(`cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`);
-        const cat = (0, child_process_1.execSync)('cat ansible/hosts');
-        (0, core_1.info)('here -> cat');
         (0, core_1.info)(cat.toString());
     }
     applyPlaybook(config) {
         return __awaiter(this, void 0, void 0, function* () {
-            const test = yield (0, child_process_1.execSync)('ansible-playbook --version');
-            (0, core_1.info)(test.toString());
-            //const response = await execSync(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`)
-            //info(response.toString())
+            const response = yield (0, child_process_1.execSync)(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`);
+            (0, core_1.info)(response.toString());
         });
     }
 }

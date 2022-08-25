@@ -30,24 +30,17 @@ export class Ansible {
         .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
         .join('\n');
 
-        execSync(`cat << EOF > ansible/hosts
+        const cat = execSync(`cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`)
 
-        const cat = execSync('cat ansible/hosts')
-
-        info('here -> cat')
         info(cat.toString())
     }
 
     async applyPlaybook(config: Input) {
-        const test = await execSync('ansible-playbook --version')
+        const response = await execSync(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`)
 
-        info(test.toString())
-
-        //const response = await execSync(`ansible-playbook ./playbook.yml -i ansible/hosts -u ${config.user} --extra-vars "${config.extraVars}"`)
-
-        //info(response.toString())
+        info(response.toString())
     }
 }
