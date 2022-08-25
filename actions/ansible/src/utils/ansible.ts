@@ -26,6 +26,7 @@ export class Ansible {
 
         const hosts = config.hostList
         .split(',')
+        .filter(item => item ? true: false)
         .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
         .join('\n');
 

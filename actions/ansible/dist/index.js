@@ -113,6 +113,7 @@ class Ansible {
         (0, child_process_1.execSync)('touch ansible/hosts');
         const hosts = config.hostList
             .split(',')
+            .filter(item => item ? true : false)
             .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
             .join('\n');
         (0, child_process_1.execSync)(`cat << EOF > ansible/hosts
