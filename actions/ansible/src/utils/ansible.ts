@@ -11,13 +11,12 @@ export class Ansible {
 
         execSync(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`)
 
-        info('here -> host list')
-        info(config.hostList)
-
         config.hostList.split(',').forEach(item => {
-            info('here -> ssh exec')
+            if(item) {
+                info('here -> ssh exec')
 
-            execSync(`ssh -o StrictHostKeyChecking=no -i ~/.ssh/ansible_rsa ${config.user}@${item.trim()} 'ls -la'`)
+                execSync(`ssh -o StrictHostKeyChecking=no -i ~/.ssh/ansible_rsa ${config.user}@${item.trim()} 'ls -la'`)
+            }
         })
     }
 

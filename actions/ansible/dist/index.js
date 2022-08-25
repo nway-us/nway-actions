@@ -101,11 +101,11 @@ class Ansible {
     configSshKey(config) {
         (0, child_process_1.execSync)('mkdir -p ~/.ssh');
         (0, child_process_1.execSync)(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`);
-        (0, core_1.info)('here -> host list');
-        (0, core_1.info)(config.hostList);
         config.hostList.split(',').forEach(item => {
-            (0, core_1.info)('here -> ssh exec');
-            (0, child_process_1.execSync)(`ssh -o StrictHostKeyChecking=no -i ~/.ssh/ansible_rsa ${config.user}@${item.trim()} 'ls -la'`);
+            if (item) {
+                (0, core_1.info)('here -> ssh exec');
+                (0, child_process_1.execSync)(`ssh -o StrictHostKeyChecking=no -i ~/.ssh/ansible_rsa ${config.user}@${item.trim()} 'ls -la'`);
+            }
         });
     }
     configAnsibleHosts(config) {
