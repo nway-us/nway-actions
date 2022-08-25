@@ -11,6 +11,9 @@ export class Ansible {
 
         execSync(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`)
 
+        info('here -> host list')
+        info(config.hostList)
+
         config.hostList.split(',').forEach(item => {
             info('here -> ssh exec')
 
