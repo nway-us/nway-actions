@@ -9,11 +9,13 @@ export class Ansible {
     configSshKey(config: Input) {
         execSync('mkdir -p ~/.ssh')
 
-        const hosts = config.hostList.split(',').join('\n');
-
-        execSync(`echo "${hosts}" >> ~/.ssh/known_hosts`)
-
         execSync(`(umask  077 ; echo "${config.sshKey}" | base64 --decode > ~/.ssh/ansible_rsa)`)
+
+        config.hostList.split(',').forEach(item => {
+            info('here -> ssh exec')
+
+            execSync(`ssh -o StrictHostKeyChecking=no -i ~/.ssh/ansible_rsa ${config.user}@${item.trim()} 'ls -la'`)
+        })
     }
 
     configAnsibleHosts(config: Input) {
