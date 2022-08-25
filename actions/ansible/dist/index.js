@@ -119,6 +119,9 @@ class Ansible {
 [deploy]
 ${hosts}
 EOF`);
+        const cat = (0, child_process_1.execSync)('cat ansible/hosts');
+        (0, core_1.info)('here -> cat');
+        (0, core_1.info)(cat.toString());
     }
     applyPlaybook(config) {
         return __awaiter(this, void 0, void 0, function* () {

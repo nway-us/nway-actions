@@ -33,6 +33,11 @@ export class Ansible {
 [deploy]
 ${hosts}
 EOF`)
+
+        const cat = execSync('cat ansible/hosts')
+
+        info('here -> cat')
+        info(cat.toString())
     }
 
     async applyPlaybook(config: Input) {
