@@ -70,7 +70,7 @@ function run() {
         const configStr = yield consul.DownloadFromConsul(config.configPath);
         fs.writeFileSync('playbook.yml', configStr);
         ansible.configSshKey(config);
-        ansible.configAnsibleHosts(config);
+        yield ansible.configAnsibleHosts(config);
         yield ansible.applyPlaybook(config);
     });
 }
@@ -109,18 +109,20 @@ class Ansible {
         });
     }
     configAnsibleHosts(config) {
-        (0, child_process_1.execSync)(`mkdir ansible || true`);
-        (0, child_process_1.execSync)('touch ansible/hosts');
-        const hosts = config.hostList
-            .split(',')
-            .filter(item => item ? true : false)
-            .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
-            .join('\n');
-        const cat = (0, child_process_1.execSync)(`cat << EOF > ansible/hosts
+        return __awaiter(this, void 0, void 0, function* () {
+            (0, child_process_1.execSync)(`mkdir ansible || true`);
+            (0, child_process_1.execSync)('touch ansible/hosts');
+            const hosts = config.hostList
+                .split(',')
+                .filter(item => item ? true : false)
+                .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
+                .join('\n');
+            const cat = yield (0, child_process_1.execSync)(`cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`);
-        (0, core_1.info)(cat.toString());
+            (0, core_1.info)(cat.toString());
+        });
     }
     applyPlaybook(config) {
         return __awaiter(this, void 0, void 0, function* () {

@@ -20,7 +20,7 @@ export class Ansible {
         })
     }
 
-    configAnsibleHosts(config: Input) {
+    async configAnsibleHosts(config: Input) {
         execSync(`mkdir ansible || true`)
         execSync('touch ansible/hosts')
 
@@ -30,7 +30,7 @@ export class Ansible {
         .map(item => `${item} ansible_ssh_private_key_file=~/.ssh/ansible_rsa`)
         .join('\n');
 
-        const cat = execSync(`cat << EOF > ansible/hosts
+        const cat = await execSync(`cat << EOF > ansible/hosts
 [deploy]
 ${hosts}
 EOF`)

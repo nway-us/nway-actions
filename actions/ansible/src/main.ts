@@ -37,7 +37,7 @@ async function run(): Promise<void> {
 
     ansible.configSshKey(config);
 
-    ansible.configAnsibleHosts(config);
+    await ansible.configAnsibleHosts(config);
 
     await ansible.applyPlaybook(config);
 }
